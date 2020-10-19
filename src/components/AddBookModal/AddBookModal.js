@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -6,6 +7,8 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import categories from '../../categories';
 import './AddBookModal.css';
+
+export const BOOK_DATA = 'book-wishlist-data';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -21,25 +24,41 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function addBook(event) {
-
-}
-
 function AddBookModal(props) {
-    const [category, setCategory] = React.useState('Adventure');
+    const [category, setCategory] = React.useState('');
     const [title, setTitle] = React.useState('');
     const [author, setAuthor] = React.useState('');
     const [summary, setSummary] = React.useState('');
 
     const classes = useStyles();
 
-    const handleChange = (event) => {
-        setCategory(event.target.value);
-    };
+    const handleAddBook = () =>  {
+        const key = title.toLowerCase().split(' ').join('');
 
-    // const addBook = () => {
-    //
-    // }
+        // Add the new book to any existing book data
+        let existingData = JSON.parse(window.localStorage.getItem(BOOK_DATA));
+
+        existingData[key] = {
+            title: title,
+            author: author,
+            summary: summary,
+            category: category
+        };
+
+        window.localStorage.setItem(
+            BOOK_DATA,
+            JSON.stringify(existingData)
+        );
+
+        // Clear form fields for next use
+        setTitle('');
+        setAuthor('');
+        setCategory('');
+        setSummary('');
+
+        // Close modal
+        props.handleClose();
+    }
 
     const body = (
         <div className={'AddBookModal-body'}>
@@ -50,12 +69,16 @@ function AddBookModal(props) {
                         required
                         id="outlined-required"
                         label="Title"
+                        onChange={event => setTitle(event.target.value)}
+                        value={title}
                         variant="outlined"
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Author"
+                        onChange={event => setAuthor(event.target.value)}
+                        value={author}
                         variant="outlined"
                     />
                 </div>
@@ -64,7 +87,7 @@ function AddBookModal(props) {
                   select
                   label="Category"
                   value={category}
-                  onChange={handleChange}
+                  onChange={event => setCategory(event.target.value)}
                   variant="outlined"
                 >
                   {categories.map((option) => (
@@ -78,11 +101,13 @@ function AddBookModal(props) {
                   label="Summary"
                   multiline
                   rows={4}
+                  onChange={event => setSummary(event.target.value)}
                   placeholder="What is this book about?"
+                  value={summary}
                   variant="outlined"
                 />
             </form>
-            <Button type="submit" variant="contained" color="primary" onClick={addBook}>
+            <Button className={'AddBookModal-button'} type="submit" variant="contained" color="primary" onClick={handleAddBook}>
                 {'Add Book'}
             </Button>
         </div>
@@ -102,5 +127,12 @@ function AddBookModal(props) {
         </Modal>
     );
 }
+
+AddBookModal.propTypes = {
+    /** Flag to specify if the modal is open or closed. */
+    isOpen: PropTypes.bool,
+    /** Callback function that toggles the state of the modal to closed. */
+    handleClose: PropTypes.func
+};
 
 export default AddBookModal;

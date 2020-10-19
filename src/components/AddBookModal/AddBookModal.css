@@ -3,4 +3,10 @@
     width: 400px;
     border: none;
     padding: 24px;
+    position: relative;
+}
+
+.MuiButtonBase-root.AddBookModal-button {
+    display: block;
+    margin: 8px auto;
 }

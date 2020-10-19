@@ -1,0 +1,10 @@
+.BookDetails {
+    padding-top: 48px;
+    position: relative;
+}
+
+.MuiButtonBase-root.BookDetails-back-button {
+    position: absolute;
+    left: 8px;
+    top: -8px;
+}
