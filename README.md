@@ -1,5 +1,5 @@
 # book-wishlist
-A single page app that stores a collection of books as a wishlist. Books can be added and removed from the list.
+A single-page app that stores a collection of books as a wishlist. Books can be added and removed from the list.
 
 ![App Screenshot Example](assets/demo.png "App Screenshot Example")
 
@@ -8,6 +8,9 @@ There is some book data provided in the [bookData.js](src/bookData.js) file for 
 
 ### Categories
 A limited selection of book `categories` have been pre-defined within the [categories.js](src/categories.js) file. These categories are used to populate the select input within the `AddBookModal` component. New categories can be added to this file to further expand the category options.
+
+### Post Mortem
+You can read more information about design decisions and potential future improvements for this project in the [postMortem.md](postMortem.md).
 
 ## Available Scripts
 
