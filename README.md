@@ -4,10 +4,10 @@ A single page app that stores a collection of books as a wishlist. Books can be 
 ![App Screenshot Example](assets/demo.png "App Screenshot Example")
 
 ### Demo Data
-There is some book data provided in the [bookData.js](bookData.js) file for demo purposes. You can use this data to pre-fill books into the wishlist. Follow the instructions in the comment on line 31 of App.js if you would like to use this data locally while viewing the application in development mode.
+There is some book data provided in the [bookData.js](src/bookData.js) file for demo purposes. You can use this data to pre-fill books into the wishlist. Follow the instructions in the comment on line 31 of App.js if you would like to use this data locally while viewing the application in development mode.
 
 ### Categories
-A limited selection of book `categories` have been pre-defined within the [categories.js](categories.js) file. These categories are used to populate the select input within the `AddBookModal` component. New categories can be added to this file to further expand the category options.
+A limited selection of book `categories` have been pre-defined within the [categories.js](src/categories.js) file. These categories are used to populate the select input within the `AddBookModal` component. New categories can be added to this file to further expand the category options.
 
 ## Available Scripts
 
