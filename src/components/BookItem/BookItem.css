@@ -1,4 +1,13 @@
+.BookItem {
+    position: relative;
+}
+
 .BookItem-icon {
     height: 120px;
     width: 120px;
+}
+
+.MuiButtonBase-root.BookItem-button--remove{
+    position: absolute;
+    top: 0;
 }

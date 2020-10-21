@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import bookData from './bookData';
 import './App.css';
 
-export const BOOK_DATA = 'book-wishlist-data';
+export const BOOK_DATA = "book-wishlist-data";
 
 class App extends Component{
 
@@ -22,13 +22,14 @@ class App extends Component{
             modalOpen: false,
             noData: false,
             showBookDetails: false,
-            shownTitle: ''
+            shownTitle: ""
         };
 
-        // Pre-add some example books to local storage for demo purposes
+
         window.localStorage.setItem(
             BOOK_DATA,
-            JSON.stringify(bookData)
+            JSON.stringify({})  // Remove this line and uncomment the line below to pre-add some example books to local storage for demo purposes
+            // JSON.stringify(bookData)
         );
     }
 
@@ -53,15 +54,30 @@ class App extends Component{
     closeDetails = () => {
         this.setState({
             showBookDetails: false,
-            shownTitle: ''
+            shownTitle: ""
         })
     }
 
     showDetails = (title) => {
-        // this.setState({
-        //     showBookDetails: true,
-        //     shownTitle: title
-        // })
+        this.setState({
+            showBookDetails: true,
+            shownTitle: title
+        })
+    }
+
+    removeBook = (title) => {
+        var bookData = JSON.parse(window.localStorage.getItem(BOOK_DATA));
+        const bookKey = title.toLowerCase().split(" ").join("");
+        delete bookData[bookKey];
+
+        window.localStorage.setItem(
+            BOOK_DATA,
+            JSON.stringify(bookData)
+        );
+
+        // Re-render the app to pick up the changes to local storage that a book was removed
+        // This isn't ideal, but is needed since we aren't storing the data in state or feeding it in via props
+        this.forceUpdate();
     }
 
     render () {
@@ -77,7 +93,7 @@ class App extends Component{
         let generateBookList = Object.keys(bookData).map((book, index) => {
             return (
                 <Grid key={index} item xs={4}>
-                    <BookItem gridLayout={gridSwitch} showDetails={this.showDetails} title={bookData[book].title}/>
+                    <BookItem gridLayout={gridSwitch} showDetails={this.showDetails} removeBook={this.removeBook} title={bookData[book].title}/>
                 </Grid>
             );
         });
@@ -85,18 +101,18 @@ class App extends Component{
         return (
             <div className="App">
                 <header className="App-header">
-                    <h3 className="App-title">{'Book Wishlist'}</h3>
+                    <h3 className="App-title">{"Book Wishlist"}</h3>
                     <Button
-                       className={'App-add-button'}
+                       className={"App-button--add"}
                        color="primary"
                        onClick={this.openModal}
                        startIcon={<AddIcon />}
                        variant="contained"
                     >
-                       {'Add Book'}
+                       {"Add Book"}
                     </Button>
-                    <AddBookModal handleClose={this.closeModal} isOpen={modalOpen} />
-                    <FormControlLabel className={'App-switch'} control={
+                    <AddBookModal handleClose={this.closeModal} isOpen={modalOpen} localStorageKey={BOOK_DATA} />
+                    <FormControlLabel className={"App-switch"} control={
                         <Switch
                             checked={gridSwitch}
                             color="primary"
@@ -107,15 +123,15 @@ class App extends Component{
                 </header>
                 <div className={"App-body"}>
                     {!hasBookData &&
-                        <p>{'Your wishlist is empty. Please add a book to your wishlist.'}</p>
+                        <p>{"Your wishlist is empty. Please add a book to your wishlist."}</p>
                     }
                     {hasBookData && !showBookDetails &&
-                        <Grid container direction={gridSwitch ? 'row' : 'column'} spacing={3}>
+                        <Grid alignItems={gridSwitch ? "flex-start": "center"} container direction={gridSwitch ? "row" : "column"} spacing={5}>
                         {generateBookList}
                         </Grid>
                     }
                     {showBookDetails &&
-                        <BookDetails closeDetails={this.closeDetails} title={shownTitle} />
+                        <BookDetails closeDetails={this.closeDetails} localStorageKey={BOOK_DATA} title={shownTitle} />
                     }
                 </div>
             </div>

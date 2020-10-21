@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-header {
@@ -27,7 +27,7 @@
 }
 
 /* Needed to override Material UI's styles */
-.MuiButtonBase-root.App-add-button {
+.MuiButtonBase-root.App-button--add {
     position: absolute;
     bottom: 8px;
 }

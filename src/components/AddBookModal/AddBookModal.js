@@ -8,8 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import categories from '../../categories';
 import './AddBookModal.css';
 
-export const BOOK_DATA = 'book-wishlist-data';
-
 const useStyles = makeStyles((theme) => ({
     modal: {
         display: 'flex',
@@ -31,12 +29,13 @@ function AddBookModal(props) {
     const [summary, setSummary] = React.useState('');
 
     const classes = useStyles();
+    const {localStorageKey} = props;
 
     const handleAddBook = () =>  {
         const key = title.toLowerCase().split(' ').join('');
 
         // Add the new book to any existing book data
-        let existingData = JSON.parse(window.localStorage.getItem(BOOK_DATA));
+        let existingData = JSON.parse(window.localStorage.getItem(localStorageKey));
 
         existingData[key] = {
             title: title,
@@ -46,7 +45,7 @@ function AddBookModal(props) {
         };
 
         window.localStorage.setItem(
-            BOOK_DATA,
+            localStorageKey,
             JSON.stringify(existingData)
         );
 
@@ -132,7 +131,9 @@ AddBookModal.propTypes = {
     /** Flag to specify if the modal is open or closed. */
     isOpen: PropTypes.bool,
     /** Callback function that toggles the state of the modal to closed. */
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    /** Key of the object in local storage holding the book data. */
+    localStorageKey: PropTypes.string
 };
 
 export default AddBookModal;
